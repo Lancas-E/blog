@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>浏览器渲染机制 | PENGUIN-SHED-94</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="以chrome为例看看浏览器的渲染机制。   遍历DOM节点树创建一个“Frame 树”或“渲染树”，并计算每个节点的各个CSS样式值;累加子节点的宽度，该节点的水平内边距(padding)、边框(border)和外边距(margin)，自底向上的计算”Frame 树”中每个节点的首选(preferred)宽度;自顶向下的给每个节点的子节点分配可行宽度，计算每个节点的实际宽度;应用文字折行、累加子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器渲染机制">
+<meta property="og:url" content="https://lancas-e.github.io/blog/browser-render/index.html">
+<meta property="og:site_name" content="PENGUIN-SHED-94">
+<meta property="og:description" content="以chrome为例看看浏览器的渲染机制。   遍历DOM节点树创建一个“Frame 树”或“渲染树”，并计算每个节点的各个CSS样式值;累加子节点的宽度，该节点的水平内边距(padding)、边框(border)和外边距(margin)，自底向上的计算”Frame 树”中每个节点的首选(preferred)宽度;自顶向下的给每个节点的子节点分配可行宽度，计算每个节点的实际宽度;应用文字折行、累加子">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lancas-e.github.io/blog/img/loading.png">
+<meta property="og:image" content="https://lancas-e.github.io/blog/img/loading.png">
+<meta property="article:published_time" content="2020-04-01T07:29:30.000Z">
+<meta property="article:modified_time" content="2020-05-07T07:33:24.059Z">
+<meta property="article:author" content="Zhang Youhan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lancas-e.github.io/blog/img/loading.png">
+  
+  
+    <link rel="icon" href="/blog/img/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <span href="/blog/" id="logo">PENGUIN-SHED-94</span>
+      </h1>
+      
+      <h2 id="subtitle-wrap">
+        <span id="subtitle">keepknowledgeastreasure</span>
+      </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+        <a class="main-nav-link" href="/blog/">Home</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-browser-render" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 class="article-title" itemprop="name">
+      浏览器渲染机制
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>以chrome为例看看浏览器的渲染机制。</p>
+<img src="/blog/img/loading.png" data-original="/blog/browser-render/browser-render-1.png" class="" title="browser-render-1">
+
+<p>遍历DOM节点树创建一个“Frame 树”或“渲染树”，并计算每个节点的各个CSS样式值;<br>累加子节点的宽度，该节点的水平内边距(padding)、边框(border)和外边距(margin)，自底向上的计算”Frame 树”中每个节点的首选(preferred)宽度;<br>自顶向下的给每个节点的子节点分配可行宽度，计算每个节点的实际宽度;<br>应用文字折行、累加子节点的高度和此节点的内边距(padding)、边框(border)和外边距(margin)，自底向上的计算每个节点的高度<br>使用上面的计算结果构建每个节点的坐标;<a id="more"></a><br>当存在元素使用 floated，位置有 absolutely 或 relatively 属性的时候，会有更多复杂的计算，详见<a href="http://dev.w3.org/csswg/css2/" target="_blank" rel="noopener">http://dev.w3.org/csswg/css2/</a> 和 <a href="http://www.w3.org/Style/CSS/current-work" target="_blank" rel="noopener">http://www.w3.org/Style/CSS/current-work</a>;<br>创建layer(层)来表示页面中的哪些部分可以成组的被绘制，而不用被重新栅格化处理。每个帧对象都被分配给一个层;<br>每个层的帧对象都会被遍历，计算机执行绘图命令绘制各个层，此过程可能由CPU执行栅格化处理，或者直接通过D2D/SkiaGL在GPU上绘制;<br>上面所有步骤都可能利用到最近一次页面渲染时计算出来的各个值，这样可以减少不少计算量;<br>计算出各个层的最终位置，一组命令由 Direct3D/OpenGL发出，GPU命令缓冲区清空，命令传至GPU并异步渲染，帧被送到Window Server。</p>
+<p><strong>帧</strong></p>
+<blockquote><p>在视频领域，电影、电视、数字视频等可视为随时间连续变换的许多张画面，而帧则指这些画面当中的每一张。</p>
+</blockquote>
+
+<p>网页上来说，其实就是指浏览器渲染出的页面。目前大多数设备的屏幕刷新频率为60次/秒（60fps），每一帧所消耗的时间约为16ms（1000 ms / 60 = 16.66ms），但实际上，浏览器还有一些整理工作要做，因此开发者所做的所有工作需要在10ms内完成。<br>如果不能完成，帧率将会下降，网页会在屏幕上抖动，也就是通常所说的卡顿，这会对用户体验产生严重的负面影响。所以如果一个页面中有动画效果或者用户正在滚动页面，那么浏览器渲染动画或页面的速率也要尽可能地与设备屏幕的刷新频率保持一致，以保证良好的用户体验。</p>
+<p><strong>像素管道</strong><br>提高帧率，其实就是优化浏览器渲染页面的过程。当你在工作时，需要了解并注意五个主要的区域，每个环节都可能卡顿，这些区域是你能在最大程度上去控制的地方，当然，也就是优化性能、提高帧率的地方。</p>
+<ul>
+<li>JavaScript：一般情况下，我们会使用JS去处理一些导致视觉变化的工作，比如动画或者增加DOM元素等。当然，除了JS，还有其他一些方法，比如：CSS Animations、Transitions、 Web Animation API</li>
+<li>Style calculations：这个过程是根据匹配选择器（.nav &gt; .nav-item）计算出哪些CSS规则应用在哪些元素上面的过程</li>
+<li>Layout：浏览器知道对一个元素应用哪些规则之后，就可以开始计算这个元素占据的空间大小及其在屏幕上的位置</li>
+<li>Paint：绘制是填充像素的过程。它涉及绘出文本、颜色、图像、边框和阴影，基本上包含了元素的每个可视部分。绘制一般是在多个层上完成的</li>
+<li>Compositing（合成）：由于页面的不同部分可能被绘制到多个层上，因此它们需要按照正确的顺序绘制到屏幕上以正确渲染页面<img src="/blog/img/loading.png" data-original="/blog/browser-render/browser-render-2.png" class="" title="browser-render-2">
+
+</li>
+</ul>
+<p>帧不一定都会经过管道每个部分的处理。在改变视觉呈现时，针对指定帧，管道的运行通常有三种方式：</p>
+<ul>
+<li>JS / CSS &gt; Style &gt; Layout &gt; Paint &gt; Composite<br>当改变了某个元素的几何属性（如width、height，或者表示位置的left、top等）——即修改了该元素的“布局（layout）”属性，那么浏览器将会检查所有其他元素，然后对页面进行“重排（reflow）”。任何受到影响的区域都需要重新绘制，然后进行合成。</li>
+<li>JS / CSS &gt; Style &gt; Paint &gt; Composite<br>当改变了只与绘制相关的属性（如背景图片、文字颜色或阴影等），即不会影响页面的布局，则浏览器会跳过布局阶段，但仍需要执行绘制、合成。</li>
+<li>JS / CSS &gt; Style &gt; Composite<br>当改变了一个既不需要“重排”也不需要“重绘”的属性（如transform），则浏览器将跳过布局、绘制阶段，直接执行合成。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/browser-render/" data-id="ckahnaqx00005akpc1m6q4ssq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+  
+<nav id="article-nav">
+  
+  
+    <a href="/blog/visual-formatting-model/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">可视化排版模型</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar" >
+  
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/CSS/">CSS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+  
+<div class="widget-wrap">
+  <h3 class="widget-title">标签</h3>
+  <div class="widget">
+    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/box-model/" rel="tag">box-model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/layout/" rel="tag">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/overview/" rel="tag">overview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/react/" rel="tag">react</a></li></ul>
+  </div>
+</div>
+
+  
+  <div class="widget-wrap">
+  <h3 class="widget-title">demo</h3>
+  <div class="widget">
+    <div><a class="tag-list-link" href="/blog/dynamic-form/">dynamic-form</a></div>
+    <div><a class="tag-list-link" href="/blog/css-demo/">css-demo</a></div>
+  </div>
+</div>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Zhang Youhan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>

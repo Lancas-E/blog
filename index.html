@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>PENGUIN-SHED-94</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录一些知识点">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PENGUIN-SHED-94">
+<meta property="og:url" content="https://lancas-e.github.io/blog/index.html">
+<meta property="og:site_name" content="PENGUIN-SHED-94">
+<meta property="og:description" content="记录一些知识点">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Zhang Youhan">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/blog/img/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <span href="/blog/" id="logo">PENGUIN-SHED-94</span>
+      </h1>
+      
+      <h2 id="subtitle-wrap">
+        <span id="subtitle">keepknowledgeastreasure</span>
+      </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+        <a class="main-nav-link" href="/blog/">Home</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-browser-render" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/browser-render/">浏览器渲染机制</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>以chrome为例看看浏览器的渲染机制。</p>
+<img src="/blog/img/loading.png" data-original="/blog/browser-render/browser-render-1.png" class="" title="browser-render-1">
+
+<p>遍历DOM节点树创建一个“Frame 树”或“渲染树”，并计算每个节点的各个CSS样式值;<br>累加子节点的宽度，该节点的水平内边距(padding)、边框(border)和外边距(margin)，自底向上的计算”Frame 树”中每个节点的首选(preferred)宽度;<br>自顶向下的给每个节点的子节点分配可行宽度，计算每个节点的实际宽度;<br>应用文字折行、累加子节点的高度和此节点的内边距(padding)、边框(border)和外边距(margin)，自底向上的计算每个节点的高度<br>使用上面的计算结果构建每个节点的坐标;
+      
+      <p class="article-more-link">
+        <a href="/blog/browser-render/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/browser-render/" data-id="ckahnaqx00005akpc1m6q4ssq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-visual-formatting-model" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/CSS/">CSS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/visual-formatting-model/">可视化排版模型</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>可视化排版模型(<a href="https://www.w3.org/TR/CSS2/visuren.html" target="_blank" rel="noopener">Visual formatting model</a>)，描述浏览器(常见的可视化媒体)处理文档树(<a href="https://www.w3.org/TR/CSS2/conform.html#doctree" target="_blank" rel="noopener">document tree</a>)的过程。CSS盒模型与布局都是服务于可视化排版模型的，之前已经介绍过了，本文主要补充一些展示区域的相关问题。</p>
+<p>formatting的翻译问题: 通常会翻译为“格式化”，但是CSS中主要表示：如何将内容展示、排布在画布(<a href="https://www.w3.org/TR/CSS2/intro.html#the-canvas" target="_blank" rel="noopener">canvas</a>)上，采用“排版”更加直观。</p>
+<p>在<a href="/blog/layout">CSS布局</a>中，盒子的主要排布规则是normal flow，更具体的讲，normal flow中的盒子还处于相应的formatting context(排版区域)中，有Block/Inline formatting contexts(BFC/IFC)。这主要是为了解决盒子在流中的一些边界问题，例如BFC主要控制块级区域中margin、浮动的界限；IFC主要控制行内元素的展示、行盒的显示规则。</p>
+      
+      <p class="article-more-link">
+        <a href="/blog/visual-formatting-model/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/visual-formatting-model/" data-id="ckahnaqx5000aakpch0is66kv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-http2" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/http2/">http2.0</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <img src="/blog/img/loading.png" data-original="/blog/http2/http2.png" class="" title="http">
+
+<p>HTTP/1.x有以下几个主要缺点：</p>
+      
+      <p class="article-more-link">
+        <a href="/blog/http2/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/http2/" data-id="ckahnaqx6000bakpcamz9h0rh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/http/" rel="tag">http</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-react-lifecycle" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/react-lifecycle/">React组件生命周期</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>React v16.3之前的生命周期函数如下：</p>
+<img src="/blog/img/loading.png" data-original="/blog/react-lifecycle/react-lifecycle-before-16.png" class="" title="lifecyccle1">
+<p>React v16.3引入了两个新的生命周期函数：</p>
+<ul>
+<li>getDerivedStateFromProps</li>
+<li>getSnapshotBeforeUpdate<img src="/blog/img/loading.png" data-original="/blog/react-lifecycle/react-lifecycle-after-16.3.png" class="" title="lifecyccle1">
+      
+      <p class="article-more-link">
+        <a href="/blog/react-lifecycle/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/react-lifecycle/" data-id="ckahnaqx20007akpc7oeh1bpk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/react/" rel="tag">react</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-layout" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/CSS/">CSS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/layout/">CSS布局</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>了解了盒子模型(box-model)，我们还需要知道这些盒子按照什么规则出现在视口(<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Viewport_concepts" target="_blank" rel="noopener">viewport</a>)中。在Overview: CSS中将构建页面比作现实中的搭积木，盒子作为积木，而layout是积木摆放规则。现实中还存在着“重力”，CSS中的书写模式writing-mode这一属性可以进行类比, 默认值writing-mode: horizontal-tb，表示从左到右、从上到下的书写方式，本文即基于此默认值。</p>
+<h4 id="正常文档流-normal-flow"><a href="#正常文档流-normal-flow" class="headerlink" title="正常文档流(normal flow)"></a>正常文档流(normal flow)</h4><p>正常文档流即是默认情况下(不对元素的CSS另作设置)，元素按照在文档中出现的顺序放置，块级元素垂直组织，而行内元素水平组织。每个块级元素会在上一个元素下面另起一行，它们会被margin分隔，相邻的块级盒子垂直方向上会产生折叠(<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing" target="_blank" rel="noopener">margin collapsing</a>)；行内元素不会另起一行；只要在其父级块级元素的宽度内有足够的空间，它们与其他行内元素处在同一行。如果空间不够，溢出的文本或元素将移到新的一行。</p>
+      
+      <p class="article-more-link">
+        <a href="/blog/layout/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/layout/" data-id="ckahnaqx10006akpcau3x0dqg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/layout/" rel="tag">layout</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-box-model" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/CSS/">CSS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/box-model/">盒模型</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>在 CSS 中，<strong>所有的元素</strong> 都被一个个的“盒子（box）”包围着，div、span这些元素都会生成至少一个盒子。理解这些“盒子”的基本原理，是我们使用CSS实现准确布局、处理元素排列的关键。</p>
+<p>盒子的 <strong>内部</strong> 和 <strong>外部</strong> 的显示类型：</p>
+<ul>
+<li><p>内部：控制盒子内部元素的布局(layout)，通常是正常文档流(normal flow)；也可以是table、flex、grid等特殊layout形式；</p>
+</li>
+<li><p>外部：控制盒子本身在外部layout中应该如何定位，normal flow中通常分为块级盒子(block-level box)和行内级盒子(inline-level box)。</p>
+</li>
+</ul>
+<p>内外显示类型通常由盒子的<a href="https://drafts.csswg.org/css-display/#the-display-properties" target="_blank" rel="noopener">display</a>属性决定。处于特殊layout中的盒子，如table、flex等格式化上下文(formatting contexts)中，按照相应的规则布局；也可以通过调整position、float属性影响盒子的内外显示类型。</p>
+<blockquote>
+<p>the inner display type, which defines (if it is a non-replaced element) the kind of formatting context it generates, dictating how its descendant boxes are laid out. (The inner display of a replaced element is outside the scope of CSS.)<br>the outer display type, which dictates how the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Visual_formatting_model#Box_generation" target="_blank" rel="noopener">principal box</a> itself participates in flow layout.</p>
+</blockquote>
+      
+      <p class="article-more-link">
+        <a href="/blog/box-model/#more">Read More</a>
+      </p>
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/box-model/" data-id="ckahnaqwx0002akpc5err0yd9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/box-model/" rel="tag">box-model</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/css/" rel="tag">css</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Overview-CSS" class="article article-type-post" itemscope
+  itemprop="blogPost">
+  <div class="article-meta">
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/CSS/">CSS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/Overview-CSS/">Overview: CSS</a>
+    </h1>
+  
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      <p>层叠样式表 (Cascading Style Sheets，缩写为 CSS），是一种 样式表 语言，用来描述 HTML 或 XML（包括如 SVG、MathML、XHTML 之类的 XML 分支语言）文档的呈现。CSS 描述了在屏幕、纸质、音频等其它媒体上的元素应该如何被渲染的问题。</p>
+<p>构建页面可以想象为搭建积木，核心内容有两点：</p>
+<ul>
+<li>积木（盒模型-box model）</li>
+<li>积木的摆放形式（布局-layout）</li>
+</ul>
+<p>此外，还有大量丰富的细节美化工作，比如字体、边框、阴影等。尤其是<a href="https://developer.mozilla.org/zh-CN/docs/Archive/CSS3" target="_blank" rel="noopener">CSS3</a>的普遍使用，前端页面可以实现非常优秀的视觉效果。</p>
+<p><strong>CSS中三个重要知识点：</strong></p>
+<ul>
+<li>盒模型-box model</li>
+<li>布局-layout</li>
+<li>局部样式、动效等-partial style, animation, etc.</li>
+</ul>
+<p>掌握前两点，我们才能让内容出现在页面上正确的位置上；掌握第三点，可以给用户带来更好的观感</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lancas-e.github.io/blog/Overview-CSS/" data-id="ckahnaqws0000akpcatwk6qbv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/overview/" rel="tag">overview</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar" >
+  
+  
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/CSS/">CSS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+  
+<div class="widget-wrap">
+  <h3 class="widget-title">标签</h3>
+  <div class="widget">
+    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/box-model/" rel="tag">box-model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/layout/" rel="tag">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/overview/" rel="tag">overview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/react/" rel="tag">react</a></li></ul>
+  </div>
+</div>
+
+  
+  <div class="widget-wrap">
+  <h3 class="widget-title">demo</h3>
+  <div class="widget">
+    <div><a class="tag-list-link" href="/blog/dynamic-form/">dynamic-form</a></div>
+    <div><a class="tag-list-link" href="/blog/css-demo/">css-demo</a></div>
+  </div>
+</div>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Zhang Youhan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+</nav>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js"></script>
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var i=n.imageLazyLoadSetting.isSPA,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){i&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,e,a=0;a<r.length;a++)t=r[a],0<=(e=t.getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(n.innerHeight||document.documentElement.clientHeight)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},n.src=i}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>
